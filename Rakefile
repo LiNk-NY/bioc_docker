@@ -4,6 +4,7 @@ require 'yaml'
 require 'fileutils'
 require 'pp'
 require 'open3'
+require 'excon'
 require 'rake'
 require 'rake/clean'
 
@@ -16,8 +17,7 @@ end
 
 CONFIG = YAML.load_file "config.yml"
 SEP = File::SEPARATOR
-REPO = 'bioconductor' # That's the username in the URL https://hub.docker.com/r/bioconductor/release_base/
-#REPO = 'sneumann' # That's the username in the URL https://hub.docker.com/r/bioconductor/release_base/
+REPO = 'mr148' # That's the username in the URL https://hub.docker.com/r/bioconductor/release_base/
 
 @docker_setup = nil
 
@@ -53,7 +53,7 @@ for version_name in CONFIG['versions'].keys
         vcontainer_name = version_name + "_" + container_name
         container_hash = CONFIG['containers'][container_name]
         parent = container_hash['parent']
-        parent = container_hash['parent'].sub("bioconductor/", "#{REPO}/#{version_name}_")
+        parent = container_hash['parent'].sub("mr148/", "#{REPO}/#{version_name}_")
         if parent =~ /bogus/
           parent = version_hash['parent']
         end
@@ -155,8 +155,8 @@ for version_name in CONFIG['versions'].keys
                     # make a read/only copy to get around some weirdness
                     rodata = CONFIG.dup['containers'][cont_name]
                     data = rodata.dup
-                    if data['parent'].start_with? "bioconductor/"
-                        data['parent'] = rodata['parent'].sub("bioconductor/", "#{REPO}/#{version}_")
+                    if data['parent'].start_with? "mr148/"
+                        data['parent'] = rodata['parent'].sub("mr148/", "#{REPO}/#{version}_")
                     end
                     if data['parent'] == 'bogus'
                       data['parent'] = vhash['parent']

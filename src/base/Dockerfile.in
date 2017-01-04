@@ -44,10 +44,10 @@ RUN rm -rf /usr/lib/R/library /usr/bin/R /usr/bin/Rscript
 <% if use_numbered_branch.is_a? String %>
 
 RUN apt-get remove -y libfreetype6; echo "ignoring return value"
-
+RUN apt-get -y install --fix-missing -t ccache
 
 RUN cd /tmp && \
-svn co https://svn.r-project.org/R/branches/R-<%= use_numbered_branch.sub(".", "-")%>-branch R \
+svn co https://svn.r-project.org/R/trunk/ R \
   && cd R \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y \
                 libblas-dev \
@@ -85,14 +85,20 @@ svn co https://svn.r-project.org/R/branches/R-<%= use_numbered_branch.sub(".", "
                 R_PRINTCMD=/usr/bin/lpr \
                 LIBnn=lib \
                 AWK=/usr/bin/awk \
+                CC="ccache gcc"
+                CXX="ccache g++"
                 CFLAGS=$(R CMD config CFLAGS) \
                 CXXFLAGS=$(R CMD config CXXFLAGS) \
-                ./configure --prefix=/usr/local --enable-R-shlib \
-                        --without-blas \
-                        --without-lapack \
-                        --with-readline \
-                        --without-recommended-packages \
-                        --program-suffix=dev && \
+                FC="ccache gfortran"
+                F77="ccache gfortran"
+                ./configure
+                        --prefix=/usr/local \
+                        --enable-R-shlib \
+                            --without-blas \
+                            --without-lapack \
+                            --with-readline \
+                            --without-recommended-packages \
+                            --program-suffix=dev && \
                 make  && \
                 make install && \
           cd / && \

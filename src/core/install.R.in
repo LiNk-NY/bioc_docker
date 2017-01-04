@@ -3,7 +3,6 @@
 
 library(BiocInstaller) # shouldn't be necessary
 
-
 pkgs <- c(
 "AnnotationDbi",
 "AnnotationHub",
@@ -13,6 +12,8 @@ pkgs <- c(
 "biomaRt",
 "Biostrings",
 "BSgenome",
+"devtools",
+"dplyr",
 # Temporarily disabled because it does not build in devel-3.5 yet
 #"epivizr",
 "GenomicFeatures",
