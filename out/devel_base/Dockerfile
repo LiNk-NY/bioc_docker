@@ -2,7 +2,7 @@
 # generated. Edit 'Dockerfile.in' and generate the 'Dockerfile'
 # with the 'rake' command.
 
-# The suggested name for this image is: sneumann/devel_base.
+# The suggested name for this image is: bioconductor/devel_base.
 
 FROM rocker/rstudio-daily
 
@@ -20,16 +20,24 @@ RUN  rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
 # temporarily (?) remove explicit jessie source
 #RUN sed -i.bak -e '/deb http:..ftp.de.debian.org.debian jessie main/d' /etc/apt/sources.list
 
+
 RUN apt-get update && \
     apt-get -y  install --fix-missing -t unstable gdb libxml2-dev python-pip
     # valgrind
+
+
+
 
 RUN pip install awscli
 
 
 
-RUN apt-get -y  install --fix-missing \
-    texlive texinfo  texlive-fonts-extra texlive-latex-extra
+RUN apt-get update && \
+    apt-get -y install --fix-missing --fix-broken -t unstable \
+    texlive \
+    texinfo \
+    texlive-fonts-extra \
+    texlive-latex-extra 
 
 
 
@@ -39,12 +47,15 @@ RUN apt-get -y  install --fix-missing \
 # FIXME figure out how to REALLY remove r-base-core and deps
 # so that it does not come back.
 
-RUN rm -rf /usr/lib/R/library /usr/bin/R /usr/bin/Rscript
 
+# issues with '/var/lib/dpkg/available' not found
+# this will recreate
+RUN dpkg --clear-avail
+RUN apt-get update 
+RUN apt-get remove -y r-base-core
 
-RUN dpkg --purge --force-depends r-base-core
-RUN rm -rf /usr/lib/R/library /usr/bin/R /usr/bin/Rscript
-
+# devel was having trouble installing R Matrix package because of gfortran
+RUN apt-get update && apt-get -y install -t unstable gfortran gfortran-6
 
 
 

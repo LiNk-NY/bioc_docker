@@ -2,11 +2,9 @@
 # generated. Edit 'Dockerfile.in' and generate the 'Dockerfile'
 # with the 'rake' command.
 
-# The suggested name for this image is: sneumann/release_core.
+# The suggested name for this image is: bioconductor/release_core.
 
-FROM sneumann/release_base
-
-
+FROM bioconductor/release_base2
 
 MAINTAINER maintainer@bioconductor.org
 
@@ -14,6 +12,5 @@ ADD install.R /tmp/
 
 # invalidates cache every 24 hours
 ADD http://master.bioconductor.org/todays-date /tmp/
-
 
 RUN R -f /tmp/install.R

@@ -2,7 +2,7 @@
 versions:
     release:
         version_number: "3.4" # change this at release time
-        r_url: "http://cran.fhcrc.org/src/base/R-latest.tar.gz"
+        r_url: "https://cran.rstudio.com/src/base/R-latest.tar.gz"
         parent: "rocker/rstudio"
         use_r_devel: false # should always be false
     devel:
@@ -29,23 +29,12 @@ containers: # FIXME (?) rename this to 'images' (?)
         parent: bogus
     core:
         parent: bioconductor/base
-    flow:
+    protmetcore:
         parent: bioconductor/core
         biocViews:
-            - FlowCytometry
-    microarray:
-        parent: bioconductor/core
-        biocViews:
-            - Microarray
-    sequencing:
-        parent: bioconductor/core
-        biocViews:
-            - Sequencing
-    proteomics:
-        parent: bioconductor/core
-        biocViews:
+            - Metabolomics
             - Proteomics
     metabolomics:
-        parent: bioconductor/core
+        parent: bioconductor/protmetcore
         biocViews:
             - Metabolomics

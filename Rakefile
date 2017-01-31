@@ -50,7 +50,6 @@ for version_name in CONFIG['versions'].keys
         mkimg_deps << taskname
 
 
-        vcontainer_name = version_name + "_" + container_name
         container_hash = CONFIG['containers'][container_name]
         parent = container_hash['parent']
         parent = container_hash['parent'].sub("mr148/", "#{REPO}/#{version_name}_")
@@ -130,13 +129,13 @@ for version_name in CONFIG['versions'].keys
 
         srcdir = "src" + SEP + container_name
         destdir = "out" + SEP + version_name + "_" + container_name
-        copyfiles = Rake::FileList.new(srcdir + SEP + "**" + SEP + "*", "common" + SEP + "*") do |fl|
+        copyfiles = Rake::FileList.new(srcdir + SEP + "**" + SEP + "*") do |fl|
             fl.exclude(/\.in$/)
             fl.exclude do |f|
                 File.directory? f
-            end
+            end            
         end
-        infiles = Rake::FileList[srcdir + SEP + "**" + SEP  + "*.in", "common" + SEP + "*.in"]
+        infiles = Rake::FileList[srcdir + SEP + "**" + SEP  + "*.in"]
         deps = []
         for inputfile in copyfiles + infiles
             destfile = inputfile.sub(/#{srcdir}|common/, destdir)
@@ -172,12 +171,16 @@ for version_name in CONFIG['versions'].keys
                     vars = ErbBinding.new(data)
                     erb = ERB.new(File.new(source).read, nil, "%")
                     vars_binding = vars.send(:get_binding)
+                    destfold = File.dirname(t.name)
+                    mkdir_p destfold
                     out_fh = File.open(t.name, "w")
                     out_fh.write(erb.result(vars_binding)) 
                     out_fh.close()
 
 
-                else
+                else 
+                    destfold = File.dirname(t.name)
+		    mkdir_p destfold
                     cp source, t.name, :preserve => true
                 end
             end
