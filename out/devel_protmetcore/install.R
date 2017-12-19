@@ -10,7 +10,7 @@ library(BiocInstaller) # shouldn't be necessary
 
 wantedBiocViews <- c("Metabolomics","Proteomics")
 
-url <- "http://www.bioconductor.org/packages/3.5/bioc/VIEWS"
+url <- "http://www.bioconductor.org/packages/3.6/bioc/VIEWS"
 
 t <- tempfile()
 download.file(url, t)
@@ -39,6 +39,12 @@ ap <- rownames(ap.db)
 ##
 pkgs_to_install <- pkgs_matching_views[pkgs_matching_views %in% ap]
 
+##
+## gridExtra is in Suggests: of ChemmineR, but ChemmineR fails if not
+## present
+##
+
+pkgs_to_install <- c(pkgs_to_install, "gridExtra")
 
 
 # don't reinstall anything that's installed already

@@ -3,35 +3,28 @@
 
 library(BiocInstaller) # shouldn't be necessary
 
-##
-## Obtain list of packages in view, as defined in config.yml
-##
 
+## Obtain list of packages in view, as defined in config.yml
 <% if defined? biocViews %>
 wantedBiocViews <- c(<%= biocViews.map{|i| '"' + i + '"'}.join(",")  %>)
 <% else %>
 wantedBiocViews <- c("none")
 <% end %>
-url <- "http://www.bioconductor.org/packages/<%= bioc_version %>/bioc/VIEWS"
 
-t <- tempfile()
-download.file(url, t)
-dcf <- as.data.frame(read.dcf(t), stringsAsFactors=FALSE)
+install.packages("Cairo")
 
-pkgs_matching_views <- c()
+## software packages
+con1 <- url("http://www.bioconductor.org/packages/<%= bioc_version %>/bioc/VIEWS")
+dcf1 <- as.data.frame(read.dcf(con1), stringsAsFactors=FALSE)
+## data packages
+con2 <- url("http://www.bioconductor.org/packages/<%= bioc_version %>/data/experiment/VIEWS")
+dcf2 <- as.data.frame(read.dcf(con2), stringsAsFactors=FALSE)
 
-for (i in 1:nrow(dcf))
-{
-    row <- dcf[i,]
-    if ((!is.na(row$biocViews)) && (!is.null(row$biocViews)))
-    {
-        views <- strsplit(gsub("\\s", "", row$biocViews), ",")[[1]]
-        if(all(wantedBiocViews %in% views))
-            pkgs_matching_views <- append(pkgs_matching_views, row$Package)
-    }
-}
-length(pkgs_matching_views)
+dcf <- rbind(dcf1[, c("Package", "biocViews")],
+             dcf2[, c("Package", "biocViews")])
 
+i <- lapply(wantedBiocViews, grep, dcf$biocViews)
+pkgs_matching_views <- dcf$Package[unique(unlist(i))]
 
 ap.db <- available.packages(contrib.url(biocinstallRepos()))
 ap <- rownames(ap.db)
@@ -41,16 +34,13 @@ ap <- rownames(ap.db)
 ##
 pkgs_to_install <- pkgs_matching_views[pkgs_matching_views %in% ap]
 
-##
-## gridExtra is in Suggests: of ChemmineR, but ChemmineR fails if not
-## present
-##
-
-pkgs_to_install <- c(pkgs_to_install, "gridExtra")
-
-
 # don't reinstall anything that's installed already
 pkgs_to_install <- setdiff(pkgs_to_install, rownames(installed.packages()))
+
+## test - there are 96 packages
+## installing 48 works
+## works with 65, R3.4.0_Bioc3.5 only though
+pkgs_to_install <- pkgs_to_install[1:50]
 
 ## Start the actual installation:
 biocLite(pkgs_to_install)
@@ -59,8 +49,7 @@ biocLite(pkgs_to_install)
 # without having to scroll up:
 warnings()
 
-if (!is.null(warnings()))
-{
+if (!is.null(warnings())) {
     w <- capture.output(warnings())
     if (length(grep("is not available|had non-zero exit status", w)))
         quit("no", 1L)

@@ -3,33 +3,9 @@
 
 library(BiocInstaller) # shouldn't be necessary
 
-
-pkgs <- c(
-    "OrganismDbi",
-    "ExperimentHub",
-    "Biobase",
-    "BiocParallel",
-    "biomaRt",
-    "Biostrings",
-    "BSgenome",
-    "ShortRead",
-    "IRanges",
-    "GenomicRanges",
-    "GenomicAlignments",
-    "GenomicFeatures",
-    "SummarizedExperiment",
-    "VariantAnnotation",
-    "DelayedArray",
-    "GSEABase",
-    "Gviz",
-    "graph",
-    "RBGL",
-    "Rgraphviz",
-    "rmarkdown",
-    "httr",
-    "knitr",
-    "BiocStyle"
-    )
+pkgs <- c("biocViews", "ProtGenerics", "mzR", "MSnbase", "msdata",
+          "BiocParallel", "knitr", "rmarkdown", "httr", "RCul", "XML",
+          "zlibbioc")
 
 ap.db <- available.packages(contrib.url(biocinstallRepos()))
 ap <- rownames(ap.db)

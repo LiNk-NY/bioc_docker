@@ -2,11 +2,11 @@
 # generated. Edit 'Dockerfile.in' and generate the 'Dockerfile'
 # with the 'rake' command.
 
-# The suggested name for this image is: bioconductor/release_protmetcore.
+# The suggested name for this image is: bioconductor/release_proteomics.
 
-FROM bioconductor/release_mscore2
+FROM bioconductor/release_protmetcore2
 
-MAINTAINER sneumann@ipb-halle.de
+MAINTAINER lg390@cam.ac.uk
 
 ADD install.R /tmp/
 
