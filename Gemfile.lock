@@ -2,11 +2,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.1)
-    docker-api (1.33.1)
+    docker-api (1.33.2)
       excon (>= 0.38.0)
       json
     excon (0.54.0)
-    json (2.0.2)
+    json (2.0.3)
     method_source (0.8.2)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -22,4 +22,4 @@ DEPENDENCIES
   pry
 
 BUNDLED WITH
-   1.11.2
+   1.12.5
