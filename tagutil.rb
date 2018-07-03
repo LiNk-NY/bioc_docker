@@ -19,7 +19,7 @@ end
 
 
 def get_image_info()
-    repo = 'bioconductor'
+    repo = 'mr148'
     versions = %w(release devel)
     for version in versions
         for imagename in @imagenames
@@ -37,7 +37,7 @@ def get_image_info()
 end
 
 def get_local_image_info(name)
-    name = "bioconductor/" + name unless name.start_with? "bioconductor/"
+    name = "mr148/" + name unless name.start_with? "mr148/"
     images = Docker::Image.all
     image = images.find{|i| i.info['RepoTags'].first.start_with? name}
     if image.nil?
@@ -49,7 +49,7 @@ end
 
 #e.g. devel_flow
 def retag(name)
-    name = "bioconductor/" + name unless name.start_with? "bioconductor/"
+    name = "mr148/" + name unless name.start_with? "mr148/"
     images = Docker::Image.all
     image = images.find{|i| i.info['RepoTags'].first.start_with? name}
     if image.nil?
