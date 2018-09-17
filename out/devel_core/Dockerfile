@@ -4,7 +4,7 @@
 
 # The suggested name for this image is: mr148/devel_core.
 
-FROM bioconductor/base2
+FROM bioconductor/devel_base2
 
 MAINTAINER maintainer@bioconductor.org
 

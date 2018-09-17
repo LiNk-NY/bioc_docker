@@ -31,7 +31,7 @@ containers: # FIXME (?) rename this to 'images' (?)
     base:
         parent: bogus
     core:
-        parent: mr148/devel_base
+        parent: mr148/base
     mscore:
         parent: bioconductor/base	
     protmetcore:
