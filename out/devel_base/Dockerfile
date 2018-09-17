@@ -4,7 +4,7 @@
 
 # The suggested name for this image is: bioconductor/devel_base.
 
-FROM rocker/rstudio:3.5.0
+FROM rocker/rstudio:3.5.1
 
 # FIXME? in release, default CRAN mirror is set to rstudio....should it be fhcrc?
 
@@ -56,4 +56,7 @@ RUN apt-get update && \
 ADD install.R /tmp/
 
 RUN R -f /tmp/install.R && \
-    echo "library(BiocInstaller)" > $HOME/.Rprofile
+    echo "library(BiocManager)" > $HOME/.Rprofile
+
+#RUN R -f /tmp/install.R && \
+#    echo "library(BiocInstaller)" > $HOME/.Rprofile

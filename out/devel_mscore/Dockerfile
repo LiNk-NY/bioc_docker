@@ -2,9 +2,9 @@
 # generated. Edit 'Dockerfile.in' and generate the 'Dockerfile'
 # with the 'rake' command.
 
-# The suggested name for this image is: bioconductor/devel_mscore.
+# The suggested name for this image is: mr148/devel_mscore.
 
-FROM bioconductor/devel_base2
+FROM bioconductor/base2
 
 MAINTAINER lg390@cam.ac.uk
 

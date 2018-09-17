@@ -2,9 +2,9 @@
 # generated. Edit 'Dockerfile.in' and generate the 'Dockerfile'
 # with the 'rake' command.
 
-# The suggested name for this image is: bioconductor/release_metabolomics.
+# The suggested name for this image is: mr148/release_metabolomics.
 
-FROM bioconductor/release_protmetcore2
+FROM bioconductor/protmetcore2
 
 MAINTAINER sneumann@ipb-halle.de
 
